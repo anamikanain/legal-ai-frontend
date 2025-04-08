@@ -1,5 +1,4 @@
 import { Copy, Clock } from "lucide-react"
-// import { DocumentDownload } from "@/components/document-download"
 import { DocumentDownload } from "./document-download"
 
 interface Message {

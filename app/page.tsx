@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { MessageInput } from "./components/message-input"
-import { Sidebar } from "./components/sidebar"
-import { ChatInterface } from "./components/chat-interface"
-import { Toaster } from "./components/ui/toaster"
+import { useState } from "react";
+import { MessageInput } from "./components/message-input";
+import { Sidebar } from "./components/sidebar";
+import { ChatInterface } from "./components/chat-interface";
+import { Toaster } from "./components/ui/toaster";
 
 // Define message types
 interface Message {
-  id: string
-  content: string
-  role: "user" | "assistant"
-  timestamp: string
+  id: string;
+  content: string;
+  role: "user" | "assistant";
+  timestamp: string;
 }
 
 export default function Home() {
@@ -22,12 +22,15 @@ export default function Home() {
       role: "assistant",
       timestamp: "10:15",
     },
-  ])
+  ]);
 
   const handleSendMessage = (content: string) => {
     // Generate a timestamp
-    const now = new Date()
-    const timestamp = `${now.getHours()}:${now.getMinutes().toString().padStart(2, "0")}`
+    const now = new Date();
+    const timestamp = `${now.getHours()}:${now
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}`;
 
     // Add user message
     const userMessage: Message = {
@@ -35,15 +38,18 @@ export default function Home() {
       content,
       role: "user",
       timestamp,
-    }
+    };
 
-    setMessages((prev) => [...prev, userMessage])
-  }
+    setMessages((prev) => [...prev, userMessage]);
+  };
 
   const handleAIResponse = (content: string) => {
     // Generate a timestamp
-    const now = new Date()
-    const timestamp = `${now.getHours()}:${now.getMinutes().toString().padStart(2, "0")}`
+    const now = new Date();
+    const timestamp = `${now.getHours()}:${now
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}`;
 
     // Add AI message
     const aiMessage: Message = {
@@ -51,10 +57,10 @@ export default function Home() {
       content,
       role: "assistant",
       timestamp,
-    }
+    };
 
-    setMessages((prev) => [...prev, aiMessage])
-  }
+    setMessages((prev) => [...prev, aiMessage]);
+  };
 
   return (
     <main className="flex h-screen bg-gray-50">
@@ -67,11 +73,13 @@ export default function Home() {
           <ChatInterface messages={messages} />
         </div>
         <div className="p-6 border-t border-gray-200">
-          <MessageInput onSendMessage={handleSendMessage} onAIResponse={handleAIResponse} />
+          <MessageInput
+            onSendMessage={handleSendMessage}
+            onAIResponse={handleAIResponse}
+          />
         </div>
       </div>
       <Toaster />
     </main>
-  )
+  );
 }
-
