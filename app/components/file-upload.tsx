@@ -15,10 +15,10 @@ export function FileUpload({ onFileSelected }: FileUploadProps) {
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return
-
+  
     const file = e.target.files[0]
     setIsSelecting(true)
-
+  
     try {
       // Check if file is PDF or DOCX
       if (!file.name.endsWith(".pdf") && !file.name.endsWith(".docx")) {
@@ -29,6 +29,7 @@ export function FileUpload({ onFileSelected }: FileUploadProps) {
         })
         return
       }
+  
       onFileSelected(file)
     } catch (error) {
       console.error("Error processing file:", error)
@@ -39,8 +40,11 @@ export function FileUpload({ onFileSelected }: FileUploadProps) {
       })
     } finally {
       setIsSelecting(false)
+      // Reset the file input so the same file can be selected again
+      e.target.value = ""
     }
   }
+  
 
   return (
     <label className="cursor-pointer text-gray-500 hover:text-gray-700 relative">
