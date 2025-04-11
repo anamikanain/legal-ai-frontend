@@ -1,17 +1,20 @@
-import { Copy, Clock, CheckCheck } from "lucide-react";
-import { DocumentDownload } from "./document-download";
-import React from "react";
-import ReactMarkdown from "react-markdown";
+import { Clock } from "lucide-react"
+import ReactMarkdown from "react-markdown"
+import { ChatLoader } from "./chat-loader"
+
 interface Message {
-  id: string;
-  content: string;
-  role: "user" | "assistant";
-  timestamp: string;
+  id: string
+  content: string
+  role: "user" | "assistant"
+  timestamp: string
 }
+
 interface ChatInterfaceProps {
-  messages: Message[];
+  messages: Message[]
+  isLoading?: boolean
 }
-export function ChatInterface({ messages }: ChatInterfaceProps) {
+
+export function ChatInterface({ messages, isLoading = false }: ChatInterfaceProps) {
   return (
     <div className="space-y-6">
       {messages.map((message) =>
@@ -24,9 +27,7 @@ export function ChatInterface({ messages }: ChatInterfaceProps) {
               </div>
               <div className="flex items-center justify-end mt-1">
                 <Clock size={12} className="text-gray-400 mr-1" />
-                <span className="text-xs text-gray-400">
-                  {message.timestamp}
-                </span>
+                <span className="text-xs text-gray-400">{message.timestamp}</span>
               </div>
             </div>
           </div>
@@ -54,8 +55,14 @@ export function ChatInterface({ messages }: ChatInterfaceProps) {
               </div>
             </div>
           </div>
-        )
+        ),
+      )}
+
+      {isLoading && (
+        <div className="mt-4">
+          <ChatLoader />
+        </div>
       )}
     </div>
-  );
+  )
 }

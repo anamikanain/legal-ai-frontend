@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { Send } from "lucide-react"
 import { FileUpload } from "./file-upload"
@@ -7,13 +6,13 @@ import { useToast } from "./ui/use-toast"
 import axios from "axios"
 import { FileText } from "lucide-react"
 
-
 interface MessageInputProps {
   onSendMessage: (message: string) => void
   onAIResponse: (response: string) => void
+  setIsLoading: (loading: boolean) => void
 }
 
-export function MessageInput({ onSendMessage, onAIResponse }: MessageInputProps) {
+export function MessageInput({ onSendMessage, onAIResponse, setIsLoading }: MessageInputProps) {
   const [message, setMessage] = useState("")
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
   const [uploadedFileNames, setUploadedFileNames] = useState<string[]>([])
@@ -28,6 +27,7 @@ export function MessageInput({ onSendMessage, onAIResponse }: MessageInputProps)
     const currentMessage = message
     setMessage("")
     setIsQuerying(true)
+    setIsLoading(true)
 
     try {
       let response
@@ -37,7 +37,7 @@ export function MessageInput({ onSendMessage, onAIResponse }: MessageInputProps)
         const formData = new FormData()
         uploadedFiles.forEach((file) => {
           // formData.append("document", file)
-          formData.append("document", uploadedFiles[0]);
+          formData.append("document", uploadedFiles[0])
         })
 
         // Add the query to formData if it exists
@@ -87,6 +87,7 @@ export function MessageInput({ onSendMessage, onAIResponse }: MessageInputProps)
       onAIResponse("An error occurred while contacting the API.")
     } finally {
       setIsQuerying(false)
+      setIsLoading(false)
     }
   }
 
@@ -120,25 +121,21 @@ export function MessageInput({ onSendMessage, onAIResponse }: MessageInputProps)
       </div>
 
       {uploadedFiles.length > 0 && (
-  <div className="flex flex-wrap gap-2 mb-2">
-    {uploadedFiles.map((file, index) => (
-      <div
-        key={index}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-sm shadow-sm"
-      >
-        <FileText size={14} className="text-gray-500" />
-        <span className="max-w-[100px] h-[25px]  truncate">{file.name}</span>
-        <button
-          onClick={() => removeFile(index)}
-          className="text-gray-400 hover:text-red-500 text-xs"
-        >
-          ×
-        </button>
-      </div>
-    ))}
-  </div>
-)}
-
+        <div className="flex flex-wrap gap-2 mb-2">
+          {uploadedFiles.map((file, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-sm shadow-sm"
+            >
+              <FileText size={14} className="text-gray-500" />
+              <span className="max-w-[100px] h-[25px] truncate">{file.name}</span>
+              <button onClick={() => removeFile(index)} className="text-gray-400 hover:text-red-500 text-xs">
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2">
         <FileUpload onFileSelected={handleFileSelected} />
@@ -158,8 +155,6 @@ export function MessageInput({ onSendMessage, onAIResponse }: MessageInputProps)
         />
 
         <div className="flex items-center gap-2">
-          <button className="text-gray-500 hover:text-gray-700">
-          </button>
           <button
             className="bg-blue-600 text-white rounded-full p-1.5 hover:bg-blue-700 disabled:opacity-50"
             onClick={handleSendMessage}
