@@ -57,9 +57,12 @@
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
     "date-fns": "3.6.0",
+    "docx": "^9.4.1",
     "embla-carousel-react": "8.5.1",
+    "file-saver": "^2.0.5",
     "handlebars": "latest",
     "input-otp": "1.4.1",
+    "jspdf": "^3.0.1",
     "langchain": "latest",
     "lucide-react": "^0.454.0",
     "next": "15.2.4",
@@ -80,6 +83,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",

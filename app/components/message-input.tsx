@@ -8,7 +8,7 @@ import { FileText } from "lucide-react"
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void
-  onAIResponse: (response: string) => void
+  onAIResponse: any
   setIsLoading: (loading: boolean) => void
 }
 
@@ -36,8 +36,7 @@ export function MessageInput({ onSendMessage, onAIResponse, setIsLoading }: Mess
       if (uploadedFiles.length > 0) {
         const formData = new FormData()
         uploadedFiles.forEach((file) => {
-          // formData.append("document", file)
-          formData.append("document", uploadedFiles[0])
+          formData.append("document", file)
         })
 
         // Add the query to formData if it exists
@@ -45,7 +44,7 @@ export function MessageInput({ onSendMessage, onAIResponse, setIsLoading }: Mess
           formData.append("query", currentMessage)
         }
 
-        response = await axios.post("https://4330-49-249-18-30.ngrok-free.app/", formData, {
+        response = await axios.post("https://a188-49-249-18-30.ngrok-free.app/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             "ngrok-skip-browser-warning": "true",
@@ -58,7 +57,7 @@ export function MessageInput({ onSendMessage, onAIResponse, setIsLoading }: Mess
       } else {
         // Just sending a text query without files
         response = await axios.post(
-          "https://4330-49-249-18-30.ngrok-free.app/",
+          "https://a188-49-249-18-30.ngrok-free.app/",
           { query: currentMessage },
           {
             headers: {
@@ -69,8 +68,7 @@ export function MessageInput({ onSendMessage, onAIResponse, setIsLoading }: Mess
         )
       }
 
-      console.log("API ", response) // full response
-      console.log("API Data:", response.data) // only data part
+    
 
       if (response.data) {
         onAIResponse(response.data)
@@ -109,15 +107,7 @@ export function MessageInput({ onSendMessage, onAIResponse, setIsLoading }: Mess
   return (
     <div className="w-full">
       <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
-        <button className="px-4 py-1.5 text-sm border border-gray-300 rounded-full hover:bg-gray-50 whitespace-nowrap">
-          Compare Documents
-        </button>
-        <button className="px-4 py-1.5 text-sm border border-gray-300 rounded-full hover:bg-gray-50 whitespace-nowrap">
-          Show missing clause suggestion
-        </button>
-        <button className="px-4 py-1.5 text-sm border border-gray-300 rounded-full hover:bg-gray-50 whitespace-nowrap">
-          Add new clause
-        </button>
+     
       </div>
 
       {uploadedFiles.length > 0 && (
