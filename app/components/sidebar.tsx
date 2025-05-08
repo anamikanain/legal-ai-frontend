@@ -7,14 +7,13 @@ interface RecentSearchItem {
 
 export function Sidebar() {
   const recentSearches: RecentSearchItem[] = [
-    { title: "Generate a section 112 format", timestamp: "2h ago" },
-    { title: "Complixi SICP Tutorial course", timestamp: "2h ago" },
-    { title: "Proxy failure troubleshooting", timestamp: "2h ago" },
-    { title: "Wake me up when september ends", timestamp: "2h ago" },
-    { title: "Best Oasis songs top 100 of all time", timestamp: "2h ago" },
-    { title: "Fix SSL/TLS Error", timestamp: "2h ago" },
-  ]
-
+    { title: "Section 112: Format Guidelines under U.S. Code", timestamp: "1h ago" },
+  { title: "Section 230: Protection for Online Platforms", timestamp: "2h ago" },
+  { title: "Section 8: Housing Assistance Eligibility", timestamp: "3h ago" },
+  { title: "Section 1983: Civil Action for Deprivation of Rights", timestamp: "5h ago" },
+  { title: "Title IX: Education Amendments Overview", timestamp: "12h ago" },
+  { title: "First Amendment: Free Speech Cases", timestamp: "22h ago" },
+];
   return (
     <div className="w-64 bg-white border-r border-gray-200 p-4 flex flex-col h-full">
       <h1 className="text-lg font-bold mb-6">Legal AI</h1>

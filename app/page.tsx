@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState } from "react";
 import { MessageInput } from "./components/message-input";
@@ -8,10 +8,10 @@ import { Toaster } from "./components/ui/toaster";
 
 // Define message types
 interface Message {
-  id: string;
-  content: string;
-  role: "user" | "assistant";
-  timestamp: string;
+  id: string
+  content: string
+  role: "user" | "assistant"
+  timestamp: string
 }
 
 export default function Home() {
@@ -22,15 +22,13 @@ export default function Home() {
       role: "assistant",
       timestamp: "10:15",
     },
-  ]);
+  ])
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSendMessage = (content: string) => {
     // Generate a timestamp
-    const now = new Date();
-    const timestamp = `${now.getHours()}:${now
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}`;
+    const now = new Date()
+    const timestamp = `${now.getHours()}:${now.getMinutes().toString().padStart(2, "0")}`
 
     // Add user message
     const userMessage: Message = {
@@ -38,18 +36,15 @@ export default function Home() {
       content,
       role: "user",
       timestamp,
-    };
+    }
 
-    setMessages((prev) => [...prev, userMessage]);
-  };
+    setMessages((prev) => [...prev, userMessage])
+  }
 
   const handleAIResponse = (content: string) => {
     // Generate a timestamp
-    const now = new Date();
-    const timestamp = `${now.getHours()}:${now
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}`;
+    const now = new Date()
+    const timestamp = `${now.getHours()}:${now.getMinutes().toString().padStart(2, "0")}`
 
     // Add AI message
     const aiMessage: Message = {
@@ -57,10 +52,10 @@ export default function Home() {
       content,
       role: "assistant",
       timestamp,
-    };
+    }
 
-    setMessages((prev) => [...prev, aiMessage]);
-  };
+    setMessages((prev) => [...prev, aiMessage])
+  }
 
   return (
     <main className="flex h-screen bg-gray-50">
@@ -70,16 +65,13 @@ export default function Home() {
           <h1 className="text-2xl font-medium">Welcome</h1>
         </div>
         <div className="flex-1 overflow-auto px-6 pb-6">
-          <ChatInterface messages={messages} />
+          <ChatInterface messages={messages} isLoading={isLoading} />
         </div>
         <div className="p-6 border-t border-gray-200">
-          <MessageInput
-            onSendMessage={handleSendMessage}
-            onAIResponse={handleAIResponse}
-          />
+          <MessageInput onSendMessage={handleSendMessage} onAIResponse={handleAIResponse} setIsLoading={setIsLoading} />
         </div>
       </div>
       <Toaster />
     </main>
-  );
+  )
 }
