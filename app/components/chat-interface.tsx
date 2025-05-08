@@ -32,11 +32,11 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         const marginTop = 15;
         const lineHeight = 10; // space between lines
         const pageHeight = doc.internal.pageSize.height;
-  
+
         const splitText = doc.splitTextToSize(content, 180);
         let currentHeight = marginTop;
-  
-        splitText.forEach((line:any) => {
+
+        splitText.forEach((line: any) => {
           if (currentHeight + lineHeight > pageHeight - marginTop) {
             doc.addPage();
             currentHeight = marginTop;
@@ -44,7 +44,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           doc.text(line, marginLeft, currentHeight);
           currentHeight += lineHeight;
         });
-  
+
         doc.save(`Document.pdf`);
       } else {
         const blob = new Blob([content], { type: "application/msword" });
@@ -59,7 +59,6 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       console.error(`${format.toUpperCase()} download failed:`, error);
     }
   };
-  
 
   return (
     <div className="flex flex-col gap-4">
@@ -104,25 +103,28 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                     {message.timestamp}
                   </span>
                 </div>
-                <div className="flex gap-2 mt-3">
-                  {["pdf", "doc"].map((format) => (
-                    <Button
-                      key={format}
-                      variant="outline"
-                      size="sm"
-                      className="h-10 px-4 text-xs font-medium flex items-center gap-1 rounded-md border-gray-300 hover:bg-gray-100 transition"
-                      onClick={() =>
-                        downloadResponse(
-                          message.content,
-                          format as "pdf" | "doc"
-                        )
-                      }
-                    >
-                      <Download size={14} className="text-gray-600" />
-                      {format.toUpperCase()}
-                    </Button>
-                  ))}
-                </div>
+                {message.content !==
+                  "Hello! I'm your personal AI Assistant Strategist." && (
+                  <div className="flex gap-2 mt-3">
+                    {["pdf", "doc"].map((format) => (
+                      <Button
+                        key={format}
+                        variant="outline"
+                        size="sm"
+                        className="h-10 px-4 text-xs font-medium flex items-center gap-1 rounded-md border-gray-300 hover:bg-gray-100 transition"
+                        onClick={() =>
+                          downloadResponse(
+                            message.content,
+                            format as "pdf" | "doc"
+                          )
+                        }
+                      >
+                        <Download size={14} className="text-gray-600" />
+                        {format.toUpperCase()}
+                      </Button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

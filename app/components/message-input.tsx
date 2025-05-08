@@ -19,60 +19,47 @@ export function MessageInput({ onSendMessage, onAIResponse, setIsLoading }: Mess
   const { toast } = useToast()
 
   const handleSendMessage = async () => {
-    if (!message.trim() && uploadedFiles.length === 0) return
-
-    // First send the message to the UI
-    onSendMessage(`${message}${uploadedFileNames.length ? ` | ${uploadedFileNames.join(", ")}` : ""}`)
-
-    const currentMessage = message
+    const trimmedMessage = message.trim()
+    const hasFiles = uploadedFiles.length > 0
+    const hasMessage = !!trimmedMessage
+  
+    if (!hasMessage && !hasFiles) return
+  
+    const API_URL = "https://d5ee-49-249-18-30.ngrok-free.app/"
+    const headersBase = {
+      "ngrok-skip-browser-warning": "true",
+    }
+  
+    const combinedMessage = `${message}${uploadedFileNames.length ? ` | ${uploadedFileNames.join(", ")}` : ""}`
+    onSendMessage(combinedMessage)
+  
     setMessage("")
     setIsQuerying(true)
     setIsLoading(true)
-
+  
     try {
-      let response
-
-      // If we have files to upload
-      if (uploadedFiles.length > 0) {
-        const formData = new FormData()
-        uploadedFiles.forEach((file) => {
-          formData.append("document", file)
-        })
-
-        // Add the query to formData if it exists
-        if (currentMessage.trim()) {
-          formData.append("query", currentMessage)
-        }
-
-        response = await axios.post("https://b2c8-49-249-18-30.ngrok-free.app/", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "ngrok-skip-browser-warning": "true",
-          },
-        })
-
-        // Clear uploaded files after sending
+      const data = hasFiles
+        ? (() => {
+            const formData = new FormData()
+            uploadedFiles.forEach(file => formData.append("document", file))
+            if (hasMessage) formData.append("query", trimmedMessage)
+            return formData
+          })()
+        : { query: trimmedMessage }
+  
+      const headers = {
+        ...headersBase,
+        "Content-Type": hasFiles ? "multipart/form-data" : "application/json",
+      }
+  
+      const response = await axios.post(API_URL, data, { headers })
+  
+      if (hasFiles) {
         setUploadedFiles([])
         setUploadedFileNames([])
-      } else {
-        // Just sending a text query without files
-        response = await axios.post(
-          "https://b2c8-49-249-18-30.ngrok-free.app/",
-          { query: currentMessage },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "ngrok-skip-browser-warning": "true",
-            },
-          },
-        )
       }
-
-      if (response.data) {
-        onAIResponse(response.data)
-      } else {
-        onAIResponse("No answer returned from the API.")
-      }
+  
+      onAIResponse(response.data || "No answer returned from the API.")
     } catch (error) {
       console.error("API call failed:", error)
       toast({
@@ -86,7 +73,7 @@ export function MessageInput({ onSendMessage, onAIResponse, setIsLoading }: Mess
       setIsLoading(false)
     }
   }
-
+  
   const handleFileSelected = (file: File) => {
     setUploadedFiles((prev) => [...prev, file])
     setUploadedFileNames((prev) => [...prev, file.name])
