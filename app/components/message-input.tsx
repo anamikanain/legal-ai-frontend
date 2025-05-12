@@ -25,7 +25,7 @@ export function MessageInput({ onSendMessage, onAIResponse, setIsLoading }: Mess
   
     if (!hasMessage && !hasFiles) return
   
-    const API_URL = "https://d5ee-49-249-18-30.ngrok-free.app/"
+    const API_URL = "https://7340-49-249-18-30.ngrok-free.app/"
     const headersBase = {
       "ngrok-skip-browser-warning": "true",
     }
